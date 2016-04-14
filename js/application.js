@@ -1,19 +1,26 @@
 App.onLaunch = function(options) {
   // 1
-  var alert = createAlert("Welcome to my first Apple TV app", ""); //leaving 2nd parameter with an empty string
-  navigationDocument.presentModal(alert);
+  var javascriptFiles = [
+    `${options.BASEURL}js/Presenter.js`
+  ];
+  // 2
+  evaluateScripts(javascriptFiles, function(success) {
+    if(success) {
+      var alert = createAlert("Hello World!", "");
+      Presenter.modalDialogPresenter(alert);
+    } else {
+      // 3 Handle the error CHALLENGE!//inside else statement of evaluateScripts. 
+    }
+  });
 }
- 
-// 2
-var createAlert = function(title, description) {
-  var alertString = `<?xml version="1.0" encoding="UTF-8" ?>
-    <document>
-      <alertTemplate>
-        <title>${title}</title>
-        <description>${description}</description>
-      </alertTemplate>
-    </document>`
-    var parser = new DOMParser();
-    var alertDoc = parser.parseFromString(alertString, "application/xml");
-    return alertDoc
-}
+
+var alertString = `<?xml version="1.0" encoding="UTF-8" ?>
+  <document>
+    <alertTemplate>
+      <title>${title}</title>
+      <description>${description}</description>
+      <button>
+        <text>OK</text>
+      </button>
+    </alertTemplate>
+  </document>`
